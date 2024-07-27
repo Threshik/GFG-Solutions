@@ -25,31 +25,26 @@ class GFG {
 class Solution {
     boolean kPangram(String str, int k) {
         // code here
-        int[] freq = new int[26]; 
-        int totalChars = 0; 
-    
-        for (char c : str.toCharArray()) {
-            if (Character.isLetter(c)) {
-                totalChars++;
-                freq[Character.toLowerCase(c) - 'a']++;
-            } 
-            
-        }
-       
-        int unqChar = 0;
-        for (int count : freq) {
-            if (count > 0) {
-                unqChar++;
+        int s=0;
+        HashSet<Character> set = new HashSet<>();
+        char[] ch = str.toCharArray();
+        for(int i=0;i<ch.length;i++)
+        {
+            if(ch[i]>='a' && ch[i]<='z')
+            {
+                if(!set.contains(ch[i]))
+                {
+                set.add(ch[i]);
+                }
+                else
+                s++; 
             }
         }
-       
-        int missingChars = 26 - unqChar;
-        
-        if (totalChars < 26) {
-            return false;
-        }
-        
-        return missingChars <= k;
+        int changes=26-set.size();
+        if(changes==0 || changes<=s && changes<=k)
+        return true;
+        else 
+        return false;
         
     }
 }
