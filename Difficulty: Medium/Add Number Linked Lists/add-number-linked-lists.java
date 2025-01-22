@@ -21,64 +21,51 @@ class Node {
 */
 
 class Solution {
-    // Function to reverse a linked list
-    static Node reverse(Node head) {
-        Node curr = head;
-        Node prev = null;
-        Node Next = null;
-        while (curr != null) {
-            Next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = Next;
-        }
-        return prev;
-    }
-
-    // Function to add two numbers represented by linked lists
-    static Node addTwoLists(Node num1, Node num2) {
-        // Reverse both input lists
-        num1 = reverse(num1);
-        num2 = reverse(num2);
-
-        // Create a dummy node to help build the result list
-        Node res = new Node(0);
-        Node ptr = res;
+   static Node addTwoLists(Node num1, Node num2) {
+        // code here
+        Node l1 = reverseList(num1);
+        Node l2 = reverseList(num2);
+        Node curr = null;
         int carry = 0;
-        Node t1 = num1;
-        Node t2 = num2;
-
-        // Loop through both lists
-        while (t1 != null || t2 != null) {
-            int sum = carry;
-            if (t1 != null) {
-                sum += t1.data;
-                t1 = t1.next;
+        while(l1!=null || l2!=null || carry >0){
+            int v1 = l1!=null ? l1.data : 0;
+            int v2 = l2!=null ? l2.data : 0;
+            int sum = v1+v2+carry;
+            carry = sum/10;
+            Node tmp = new Node(sum%10);
+            tmp.next = curr;
+            curr = tmp;
+            if(l1!=null){
+                l1=l1.next;
             }
-            if (t2 != null) {
-                sum += t2.data;
-                t2 = t2.next;
+            if(l2!=null){
+                l2=l2.next;
             }
-
-            carry = sum / 10;
-            sum = sum % 10;
-
-            ptr.next = new Node(sum);
-            ptr = ptr.next;
         }
-
-        // If there's still a carry left, add a new node for it
-        if (carry > 0) {
-            ptr.next = new Node(carry);
+        while(curr!=null && curr.data == 0){
+            curr=curr.next;
         }
-
-        // Reverse the result list to get the final sum in the correct order
-        res = reverse(res.next); // Skip the dummy node and reverse the actual result
-
-        return res;
+        return curr;
+    
+    }
+    static Node reverseList(Node head) {
+        // code here
+        Node tmpHead = null;
+        while(head!=null){
+            Node nex = head.next;
+            if(tmpHead == null) {
+                tmpHead = head;
+                tmpHead.next = null;
+            }
+            else {
+                head.next = tmpHead;
+                tmpHead = head;
+            }
+            head = nex;
+        }
+        return tmpHead;
     }
 }
-
 
 //{ Driver Code Starts.
 
@@ -132,6 +119,8 @@ class GfG {
             Solution g = new Solution();
             Node res = g.addTwoLists(num1, num2);
             printList(res);
+
+            System.out.println("~");
         }
     }
 }
