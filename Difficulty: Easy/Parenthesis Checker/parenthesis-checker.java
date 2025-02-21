@@ -1,30 +1,28 @@
 //{ Driver Code Starts
-import java.util.*;
 import java.io.*;
 import java.lang.*;
+import java.util.*;
 
-class Driverclass
-{
-    public static void main(String args[])
-    {
+class Driverclass {
+    public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        
-        //Reading total number of testcases
-        int t= sc.nextInt();
-        
-        while(t-- >0)
-        {
-            //reading the string
+
+        // Reading total number of testcases
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            // reading the string
             String st = sc.next();
-            
-            //calling ispar method of Paranthesis class 
-            //and printing "balanced" if it returns true
-            //else printing "not balanced"
-            if(new Solution().ispar(st) == true)
-                System.out.println("balanced");
+
+            // calling ispar method of Paranthesis class
+            // and printing "balanced" if it returns true
+            // else printing "not balanced"
+            if (new Solution().isBalanced(st) == true)
+                System.out.println("true");
             else
-                System.out.println("not balanced");
-        
+                System.out.println("false");
+
+            System.out.println("~");
         }
     }
 }
@@ -32,31 +30,18 @@ class Driverclass
 
 
 
-class Solution
-{
-    //Function to check if brackets are balanced or not.
-    static boolean ispar(String x)
-    {
-        // add your code here
-        Stack<Character> st = new Stack<>();
-        char[] ch = x.toCharArray();
-        for(int i=0;i<ch.length;i++)
-        {
-            if(ch[i]=='[' || ch[i]=='{' || ch[i]=='(')
-            st.push(ch[i]);
+class Solution {
+    static boolean isBalanced(String s) {
+        Stack<Character> stack=new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            if(stack.empty())
+                stack.push(ch);
+            else if(stack.peek()+1==ch||stack.peek()+2==ch)
+                stack.pop();
             else
-            {
-                if(st.isEmpty())
-                    return false;
-                else if(st.peek()=='[' && ch[i]==']' || st.peek()=='{' && ch[i]=='}' || st.peek()=='(' && ch[i]==')')
-                    st.pop();
-                else
-                    return false;
-            }
+                stack.push(ch);
         }
-         if(st.isEmpty())
-                    return true;
-        return false;
-        
+        return stack.empty();
     }
 }
