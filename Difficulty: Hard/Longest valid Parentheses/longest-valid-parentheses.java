@@ -1,58 +1,50 @@
 //{ Driver Code Starts
-//Initial Template for Java
+// Initial Template for Java
 
 import java.io.*;
 import java.util.*;
 
-class GFG{
-    public static void main(String args[])throws IOException
-    {
+class GFG {
+    public static void main(String args[]) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(in.readLine());
-        while(t-- > 0){
+        while (t-- > 0) {
             String S = in.readLine();
-            
+
             Solution ob = new Solution();
             System.out.println(ob.maxLength(S));
+
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
 
 
-//User function Template for Java
 
-class Solution{
-    static int maxLength(String S){
-        int n = S.length();
-        int[] dp = new int[n];
-        Arrays.fill(dp, 0);
-        Stack<Integer> st = new Stack<>();
-        int ans = 0;
-        int currMax = 0;
-        for(int i = 0; i < n; i++){
-            if(!st.isEmpty()){
-                char curr = S.charAt(i);
-                int tidx = st.peek();
-                char top = S.charAt(tidx);
-                if(curr == ')' && top == '('){
-                    if(tidx > 0){
-                        currMax = i-tidx+1+dp[tidx-1];
-                        ans = Math.max(currMax, ans);
-                    } else {
-                        currMax = i-tidx+1;
-                        ans = Math.max(currMax, ans);    
-                    }
-                    dp[i] = currMax;
-                    st.pop();
-                } else{
-                    st.push(i);   
+class Solution {
+    static int maxLength(String s) {
+     
+        Stack<Integer> stack=new Stack<>();
+        stack.push(-1);
+        int result=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='('){
+                stack.push(i);
+            }
+
+             else{
+
+                stack.pop(); 
+
+                if(!stack.isEmpty()){
+                   result=Math.max(result,i-stack.peek()); 
                 }
-            } else{
-                st.push(i);
+                else{
+                    stack.push(i);
+                }
             }
         }
-        return ans;
+        return result;
     }
 }
-
