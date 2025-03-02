@@ -13,7 +13,6 @@ public class Main {
 
         while (t-- > 0) {
             // taking total number of elements
-            int k = Integer.parseInt(br.readLine());
             String line = br.readLine();
             String[] tokens = line.split(" ");
 
@@ -28,47 +27,49 @@ public class Main {
             int[] arr = new int[array.size()];
             int idx = 0;
             for (int i : array) arr[idx++] = i;
-            ArrayList<Integer> res = new Solution().max_of_subarrays(k, arr);
+            int k = Integer.parseInt(br.readLine());
+            ArrayList<Integer> res = new Solution().maxOfSubarrays(arr, k);
 
             // printing the elements of the ArrayList
             for (int i = 0; i < res.size(); i++) System.out.print(res.get(i) + " ");
             System.out.println();
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
 
-
-// User function template for JAVA
-
+class Pair{
+    int index;
+    int value;
+    public Pair(int index, int value){
+        this.index = index;
+        this.value = value;
+    }
+}
 class Solution {
-    // Function to find maximum of each subarray of size k.
-    public ArrayList<Integer> max_of_subarrays(int k, int arr[]) {
-        // Your code here
+    public ArrayList<Integer> maxOfSubarrays(int arr[], int k) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)->b.value - a.value);
         ArrayList<Integer> list = new ArrayList<>();
-         int tempMax= findMax(0,k-1,arr);
-        list.add(tempMax);
         
-        for(int i=1; i<=arr.length-k; i++){
-            if(tempMax == arr[i-1] ){
-                tempMax = findMax(i, i+k-1,arr);
-                list.add(tempMax);
-            }
-            else{
-                    tempMax = Math.max(tempMax, arr[i+k-1]);
-                    list.add(tempMax);
+        for(int i=0; i<k; i++){
+            pq.add(new Pair(i, arr[i]));
+        }
+        int left = 0, right = 0;
+        while(right < arr.length){
+            if(right < k-1){
+                pq.add(new Pair(right, arr[right]));
+                right++;
+            }else{
+                pq.add(new Pair(right, arr[right]));
+                while(!pq.isEmpty() && pq.peek().index < left){
+                    pq.poll();
+                }
+                list.add(pq.peek().value);
+                left++;
+                right++;
             }
         }
         return list;
-        
-    }
-    
-    public int findMax(int start, int end, int arr[]){
-        int max=0;
-        while(start <= end){
-            max = Math.max(max, arr[start]);
-            start++;
-        }
-        return max;
     }
 }
